@@ -1,0 +1,25 @@
+pipeline {
+        agent any
+        stages {
+            stage('Pull') {
+                steps {
+                    git branch: 'dev', url: 'https://github.com/Adminwagh/frontend.git'
+        
+                }
+            }
+            stage('Build') {
+                steps {
+                    sh '''npm install
+                        ng build '''
+                }
+            }
+        
+            stage('Deploy') {
+                steps {
+                    sh '''
+                       aws s3 cp --recursive dist/angular-frontend/ s3://cbz-frontend-project-bux1/
+                    '''
+                }
+            }
+        }
+    }
